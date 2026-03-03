@@ -4,39 +4,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.piacart.config.SecurityConfig;
+import com.piacart.dto.LoginResponse;
 import com.piacart.entity.User;
 import com.piacart.repository.UserRepository;
 import com.piacart.security.JwtUtil;
 
 @Service
-public class UserService  {
- 
+public class UserService {
+
     @Autowired
-    private  UserRepository us;
+    private UserRepository repo;
+
     @Autowired
-    private PasswordEncoder ps ;
-	
-    public User register(User u) {
-    	u.setPassword(ps.encode(u.getPassword()));
-    	 
-    	 u.setRole("User");
-    	 return us.save(u);
-    }
-    
+    private PasswordEncoder encoder;
+
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String login(String email, String password) {
+    public User register(User user) {
 
-        User user = us.findByEmail(email)
+        user.setPassword(encoder.encode(user.getPassword()));
+        user.setRole("USER");
+
+        return repo.save(user);
+    }
+
+    public LoginResponse login(String email, String password) {
+
+        User user = repo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!ps.matches(password, user.getPassword())) {
+        if (!encoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
-        return jwtUtil.generateToken(user.getEmail(), user.getRole());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
+        return new LoginResponse(token);
     }
-	
 }
