@@ -1,5 +1,7 @@
 package com.piacart.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,4 +44,44 @@ public class UserService {
 
         return new LoginResponse(token);
     }
+    
+    //view user
+    public User getuser(String email) {
+    	
+    	return repo.findByEmail(email)
+    			.orElseThrow(()->new RuntimeException("User Not found"));
+    }
+    
+    // update user
+    public User updateuser(String email,User updateuser) {
+    	
+    	User exsistinguser=repo.findByEmail(email)
+    			.orElseThrow(()->new RuntimeException("User Not found"));
+    	
+    	exsistinguser.setName(updateuser.getName());
+    	
+    	if(updateuser.getPassword()!=null&& !updateuser.getPassword().isEmpty() ) {
+    		exsistinguser.setPassword(encoder.encode(updateuser.getPassword()));
+    	}
+   return 	repo.save(exsistinguser);
+    }
+    
+    public String deleteuser(String email) {
+    	  repo.deleteByEmail(email);
+    	  return"User deleted successfully";
+    }
+    
+    
+    //admin section
+    
+    public List<User> getalluser(){
+    return	 repo.findAll();
+    	 
+    }
+    
+    public User userbyid( Integer  id) {
+    	 return repo.findById(id)
+    			 .orElseThrow(()->new RuntimeException("User Not found"));
+    }
+    
 }
