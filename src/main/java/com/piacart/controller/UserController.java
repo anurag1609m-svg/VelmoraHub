@@ -3,15 +3,9 @@ package com.piacart.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.piacart.entity.User;
 import com.piacart.service.UserService;
@@ -21,38 +15,39 @@ import com.piacart.service.UserService;
 @CrossOrigin
 public class UserController {
 
-	  @Autowired
-	    private UserService service;
-	  
-	  @GetMapping("/profile")
-	  public User getcurrentuser(Authentication auth) {
-		  
-		  return service.getuser(auth.getName());
-	  }
-	  
-	  // 🔹 Update profile
-	    @PutMapping("/update")
-	    public User updateUser(Authentication authentication,
-	                           @RequestBody User user) {
-	        return service.updateuser(authentication.getName(), user);
-	    }
-	    
-	 // 🔹 Delete own account
-	    @DeleteMapping("/delete")
-	    public String deleteUser(Authentication authentication) {
-	        return service.deleteuser(authentication.getName());
-	    }
+    @Autowired
+    private UserService service;
 
-	    // 🔹 Get all users (future admin)
-	    @GetMapping("/all")
-	    public  List<User> getAllUsers() {
-	        return service.getalluser();
-	    }
+    // 🔹 Get logged-in user's profile
+    @GetMapping("/profile")
+    public User getCurrentUser(Authentication auth) {
+        return service.getuser(auth.getName());
+    }
 
-	    // 🔹 Get user by ID (admin)
-	    @GetMapping("/{id}")
-	    public User getUserById(@PathVariable Integer id) {
-	        return service.userbyid(id);
-	    }
-	    
+    // 🔹 Update own profile
+    @PutMapping("/update")
+    public User updateUser(Authentication auth,
+                           @RequestBody User user) {
+        return service.updateuser(auth.getName(), user);
+    }
+
+    // 🔹 Delete own account
+    @DeleteMapping("/delete")
+    public String deleteUser(Authentication auth) {
+        return service.deleteuser(auth.getName());
+    }
+
+    // 🔹 ADMIN: Get all users
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return service.getalluser();
+    }
+
+    // 🔹 ADMIN: Get user by ID
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Integer id) {
+        return service.userbyid(id);
+    }
 }
