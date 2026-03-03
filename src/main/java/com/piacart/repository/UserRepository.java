@@ -9,5 +9,5 @@ import com.piacart.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	  Optional<User> findByEmail(String email);
-	
+	  void deleteByEmail(String email);
 }
