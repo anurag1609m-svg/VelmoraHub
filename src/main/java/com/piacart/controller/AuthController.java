@@ -1,13 +1,10 @@
 package com.piacart.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.piacart.dto.LoginRequest;
+import com.piacart.dto.LoginResponse;
 import com.piacart.entity.User;
 import com.piacart.service.UserService;
 
@@ -17,16 +14,15 @@ import com.piacart.service.UserService;
 public class AuthController {
 
     @Autowired
-    private UserService us;
+    private UserService service;
 
     @PostMapping("/register")
-    public User register(@RequestBody User u) {
-        return us.register(u);
+    public User register(@RequestBody User user) {
+        return service.register(user);
     }
-    
+
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-        return us.login(request.getEmail(), request.getPassword());
-        
-      }
-    }      
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        return service.login(request.getEmail(), request.getPassword());
+    }
+}
