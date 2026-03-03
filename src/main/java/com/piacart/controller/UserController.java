@@ -50,4 +50,12 @@ public class UserController {
     public User getUserById(@PathVariable Integer id) {
         return service.userbyid(id);
     }
+    
+    // ADMIN: Delete user by id
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/{id}")
+    public String DeleteUserById(@PathVariable Integer id) {
+         service.deleteUserById(id);
+         return"User Deleted";
+    }
 }

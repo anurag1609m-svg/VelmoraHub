@@ -26,7 +26,7 @@ public class UserService {
     public User register(User user) {
 
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRole(user.getRole());
+        user.setRole("USER");
 
         return repo.save(user);
     }
@@ -84,4 +84,18 @@ public class UserService {
     			 .orElseThrow(()->new RuntimeException("User Not found"));
     }
     
+    public String deleteUserById(Integer id) {
+
+        User user = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Optional: prevent deleting admin
+        if (user.getRole().equalsIgnoreCase("ADMIN")) {
+            throw new RuntimeException("Admin cannot be deleted");
+        }
+
+        repo.delete(user);
+
+        return "User deleted successfully";
+    }
 }
