@@ -2,6 +2,7 @@ package com.piacart.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,9 +25,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-        .cors(cors -> {})   // ⭐ ye add karo
+        .cors(cors -> {})
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/user/**").hasAnyAuthority("USER","ADMIN")
@@ -36,10 +38,8 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }           
+        return http.build();   
+    }
     
     @Bean
     public org.springframework.web.servlet.config.annotation.WebMvcConfigurer corsConfigurer() {
