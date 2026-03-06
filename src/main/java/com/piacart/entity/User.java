@@ -18,17 +18,22 @@ public  class User {
 	@Column(unique = true)
 	private String email;
 	private String password;
+	private String address;
+	private String phone;
+	
 	private String role;
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(Integer id, String name, String email, String password, String role) {
+	public User(Integer id, String name, String email, String password, String address, String phone, String role) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.address = address;
+		this.phone = phone;
 		this.role = role;
 	}
 	public Integer getId() {
@@ -61,13 +66,31 @@ public  class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
-				+ ", getId()=" + getId() + ", getName()=" + getName() + ", getEmail()=" + getEmail()
-				+ ", getPassword()=" + getPassword() + ", getRole()=" + getRole() + ", getClass()=" + getClass()
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", address="
+				+ address + ", phone=" + phone + ", role=" + role + ", getId()=" + getId() + ", getName()=" + getName()
+				+ ", getEmail()=" + getEmail() + ", getPassword()=" + getPassword() + ", getRole()=" + getRole()
+				+ ", getAddress()=" + getAddress() + ", getPhone()=" + getPhone() + ", getClass()=" + getClass()
 				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
+	
+	
+	
+	
+	
 	
 	
 	
