@@ -11,4 +11,4 @@ public class LoginResponse {
     public String getToken() {
         return token;
     }
-}
+} 
