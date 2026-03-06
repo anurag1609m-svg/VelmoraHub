@@ -23,20 +23,35 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        http
+        .cors(cors -> {})   // ⭐ ye add karo
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
                 .requestMatchers("/api/user/**").hasAnyAuthority("USER","ADMIN")
                 .anyRequest().authenticated()
         )
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+        .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }           
+    
+    @Bean
+    public org.springframework.web.servlet.config.annotation.WebMvcConfigurer corsConfigurer() {
+        return new org.springframework.web.servlet.config.annotation.WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*")
+                        .allowedHeaders("*");
+            }
+        };
     }
 
     @Bean
