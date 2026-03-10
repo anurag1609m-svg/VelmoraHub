@@ -15,7 +15,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String cateurl;
     private String catename;
 
     private String disc;
@@ -30,9 +30,10 @@ public class Category {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Category(Long id, String catename, String disc, Boolean status, List<Product> products) {
+	public Category(Long id, String cateurl, String catename, String disc, Boolean status, List<Product> products) {
 		super();
 		this.id = id;
+		this.cateurl = cateurl;
 		this.catename = catename;
 		this.disc = disc;
 		this.status = status;
@@ -45,6 +46,14 @@ public class Category {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCateurl() {
+		return cateurl;
+	}
+
+	public void setCateurl(String cateurl) {
+		this.cateurl = cateurl;
 	}
 
 	public String getCatename() {
@@ -81,12 +90,11 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", catename=" + catename + ", disc=" + disc + ", status=" + status + ", products="
-				+ products + ", getId()=" + getId() + ", getCatename()=" + getCatename() + ", getDisc()=" + getDisc()
-				+ ", getStatus()=" + getStatus() + ", getProducts()=" + getProducts() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+		return "Category [id=" + id + ", cateurl=" + cateurl + ", catename=" + catename + ", disc=" + disc + ", status="
+				+ status + ", products=" + products + "]";
 	}
 
+	
 	
 
     
