@@ -1,4 +1,6 @@
 package com.piacart.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,8 +29,9 @@ public class Product {
 
     private Boolean status;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn(name="category_id")
+    @JsonBackReference
     private Category category;
 
 	public Product() {
