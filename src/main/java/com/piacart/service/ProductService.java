@@ -27,4 +27,7 @@ public class ProductService {
     /*
         2. GET PRODUCTS BY ID
      */	 
+      public void productbyid() {
+    	  
+      }
 }
