@@ -37,6 +37,9 @@ public class SecurityConfig {
                     .requestMatchers("/api/categories/**").permitAll()
                     .anyRequest().authenticated()
             )
+            .oauth2Login(oauth -> oauth
+                    .defaultSuccessUrl("/", true)
+            )
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             );
