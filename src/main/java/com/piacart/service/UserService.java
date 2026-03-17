@@ -59,7 +59,8 @@ public class UserService {
     			.orElseThrow(()->new RuntimeException("User Not found"));
     	
     	exsistinguser.setName(updateuser.getName());
-    	
+    	exsistinguser.setAddress(updateuser.getAddress());
+    	exsistinguser.setPhone(updateuser.getPhone());
     	if(updateuser.getPassword()!=null&& !updateuser.getPassword().isEmpty() ) {
     		exsistinguser.setPassword(encoder.encode(updateuser.getPassword()));
     	}
